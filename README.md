@@ -41,6 +41,11 @@ implementation with a *traditional* one.
 
 I'm pasting here the benchmark results of how it performs on my machine, an Intel Core i5,
 2.3 GHz, 8 GB Ram:
+
+**UPDATE**: Now Stackgo features a pre-alloc strategy for creating the inner slice handling
+the data which outperforms the benchmark results presented here.
+I'll update the benchmarks ASAP.
+
 ```
 Benchmark_PushDefaultStack	 5000000	       209 ns/op	      92 B/op	       1 allocs/op
 --- BENCH: Benchmark_PushDefaultStack
