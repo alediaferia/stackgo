@@ -41,40 +41,38 @@ implementation with a *traditional* one.
 I'm pasting here the benchmark results of how it performs on my machine, an Intel Core i5,
 2.3 GHz, 8 GB Ram:
 
-**UPDATE**: Now Stackgo features a pre-alloc strategy for creating the inner slice handling
-the data which outperforms the benchmark results presented here.
-I'll update the benchmarks ASAP.
-
 ```
-Benchmark_PushDefaultStack	 5000000	       209 ns/op	      92 B/op	       1 allocs/op
+Benchmark_PushDefaultStack	20000000	        90.6 ns/op	      24 B/op	       1 allocs/op
 --- BENCH: Benchmark_PushDefaultStack
-	stack_test.go:74: Testing push speed of 1 integer values on the default Stack implementation
-	stack_test.go:74: Testing push speed of 100 integer values on the default Stack implementation
-	stack_test.go:74: Testing push speed of 10000 integer values on the default Stack implementation
-	stack_test.go:74: Testing push speed of 1000000 integer values on the default Stack implementation
-	stack_test.go:74: Testing push speed of 5000000 integer values on the default Stack implementation
-Benchmark_PushAltStack	 5000000	       240 ns/op	      40 B/op	       2 allocs/op
+	stackgo_test.go:104: Testing push speed of 1 integer values on the default Stack implementation
+	stackgo_test.go:104: Testing push speed of 100 integer values on the default Stack implementation
+	stackgo_test.go:104: Testing push speed of 10000 integer values on the default Stack implementation
+	stackgo_test.go:104: Testing push speed of 1000000 integer values on the default Stack implementation
+	stackgo_test.go:104: Testing push speed of 20000000 integer values on the default Stack implementation
+Benchmark_PushAltStack	 5000000	       275 ns/op	      40 B/op	       2 allocs/op
 --- BENCH: Benchmark_PushAltStack
-	stack_test.go:85: Testing push speed of 1 integer values on the alternate Stack implementation
-	stack_test.go:85: Testing push speed of 100 integer values on the alternate Stack implementation
-	stack_test.go:85: Testing push speed of 10000 integer values on the alternate Stack implementation
-	stack_test.go:85: Testing push speed of 1000000 integer values on the alternate Stack implementation
-	stack_test.go:85: Testing push speed of 5000000 integer values on the alternate Stack implementation
-Benchmark_PopDefaultStack	100000000	        22.7 ns/op	       0 B/op	       0 allocs/op
+	stackgo_test.go:115: Testing push speed of 1 integer values on the alternate Stack implementation
+	stackgo_test.go:115: Testing push speed of 100 integer values on the alternate Stack implementation
+	stackgo_test.go:115: Testing push speed of 10000 integer values on the alternate Stack implementation
+	stackgo_test.go:115: Testing push speed of 1000000 integer values on the alternate Stack implementation
+	stackgo_test.go:115: Testing push speed of 5000000 integer values on the alternate Stack implementation
+Benchmark_PopDefaultStack	2000000000	         0.00 ns/op	       0 B/op	       0 allocs/op
 --- BENCH: Benchmark_PopDefaultStack
-	stack_test.go:95: Testing pop speed of 1 integer values on the default Stack implementation
-	stack_test.go:95: Testing pop speed of 100 integer values on the default Stack implementation
-	stack_test.go:95: Testing pop speed of 10000 integer values on the default Stack implementation
-	stack_test.go:95: Testing pop speed of 1000000 integer values on the default Stack implementation
-	stack_test.go:95: Testing pop speed of 100000000 integer values on the default Stack implementation
-Benchmark_PopAltStack	100000000	        21.4 ns/op	       0 B/op	       0 allocs/op
+	stackgo_test.go:125: Testing pop speed of 1 integer values on the default Stack implementation
+	stackgo_test.go:125: Testing pop speed of 100 integer values on the default Stack implementation
+	stackgo_test.go:125: Testing pop speed of 10000 integer values on the default Stack implementation
+	stackgo_test.go:125: Testing pop speed of 1000000 integer values on the default Stack implementation
+	stackgo_test.go:125: Testing pop speed of 100000000 integer values on the default Stack implementation
+	stackgo_test.go:125: Testing pop speed of 2000000000 integer values on the default Stack implementation
+Benchmark_PopAltStack	200000000	        61.3 ns/op	       0 B/op	       0 allocs/op
 --- BENCH: Benchmark_PopAltStack
-	stack_test.go:108: Testing pop speed of 1 integer values on the alternate Stack implementation
-	stack_test.go:108: Testing pop speed of 100 integer values on the alternate Stack implementation
-	stack_test.go:108: Testing pop speed of 10000 integer values on the alternate Stack implementation
-	stack_test.go:108: Testing pop speed of 1000000 integer values on the alternate Stack implementation
-	stack_test.go:108: Testing pop speed of 100000000 integer values on the alternate Stack implementation
-ok  	github.com/alediaferia/stackgo	73.121s
+	stackgo_test.go:138: Testing pop speed of 1 integer values on the alternate Stack implementation
+	stackgo_test.go:138: Testing pop speed of 100 integer values on the alternate Stack implementation
+	stackgo_test.go:138: Testing pop speed of 10000 integer values on the alternate Stack implementation
+	stackgo_test.go:138: Testing pop speed of 1000000 integer values on the alternate Stack implementation
+	stackgo_test.go:138: Testing pop speed of 100000000 integer values on the alternate Stack implementation
+	stackgo_test.go:138: Testing pop speed of 200000000 integer values on the alternate Stack implementation
+ok  	github.com/alediaferia/stackgo	313.428s
 ```
 
 ## Contribute
