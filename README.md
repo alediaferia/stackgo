@@ -1,11 +1,10 @@
 # Stackgo
 
 **Stackgo** is a *slice-based* implementation of a simple stack in Go.
-It usually outperforms a traditional stack implementation when pushing elements.
-It may outperform a traditional stack implementation when popping elements out
-of the stack.
+It uses a pre-alloc strategy which adds little memory overhead to the stack allocation
+but makes push operations about ~+3x times faster than with a classic Stack implementation.
 
-## Usage
+## Usage
 
 Using it is pretty straightforward
 
