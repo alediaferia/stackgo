@@ -5,6 +5,35 @@ It usually outperforms a traditional stack implementation when pushing elements.
 It may outperform a traditional stack implementation when popping elements out
 of the stack.
 
+## Usage
+
+Using it is pretty straightforward
+
+```go
+package main
+
+import (
+  "github.com/alediaferia/stackgo"
+  "fmt"
+)
+
+func main() {
+  stack := stackgo.NewStack()
+
+  // Stack supports any type
+  // so we just push whatever
+  // we want here
+  stack.Push(75)
+  stack.Push(124)
+  stack.Push("Hello World!")
+
+  for stack.Size() > 0 {
+    fmt.Printf("Just popped %v\n", stack.Pop())
+  }
+
+}
+```
+
 ## Performance
 
 This tiny package comes with a couple of benchmarks that compare the slice-based

@@ -5,7 +5,7 @@ import (
 )
 
 func Test_Stack(t *testing.T) {
-    s := NewStack()
+	s := NewStack()
 	s.Push(75)
 	s.Push(124)
 	s.Push("Hello")
@@ -33,6 +33,25 @@ func Test_Stack(t *testing.T) {
 	}
 }
 
+func Test_GithubExample(t *testing.T) {
+	stack := NewStack()
+
+	// Stack supports any type
+	// so we just push whatever
+	// we want here
+	stack.Push(75)
+	stack.Push(124)
+	stack.Push("Hello World!")
+
+	for stack.Size() > 0 {
+		_ = stack.Pop()
+	}
+
+	if stack.Size() != 0 {
+		t.Fatalf("Unexpected stack length != 0")
+	}
+}
+
 /*
  * Here follows an alternative stack
  * implementation which is not based on
@@ -41,13 +60,13 @@ func Test_Stack(t *testing.T) {
  */
 
 type AltStack struct {
-	top *Element
+	top  *Element
 	size int
 }
 
 type Element struct {
 	value interface{}
-	next *Element
+	next  *Element
 }
 
 func (s *AltStack) Size() int {
