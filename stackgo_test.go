@@ -33,6 +33,17 @@ func Test_Stack(t *testing.T) {
 	}
 }
 
+func Test_NewStackWithCapacity(t *testing.T) {
+	s := NewStackWithCapacity(42)
+	if c := s.blockSize; c != 42 {
+		t.Fatalf("Unexpected stack block size: got %d, expected 42", c)
+	}
+
+	if c := cap(s.slice); c != 42 {
+		t.Fatalf("Unexpected stack slice size: got %d, expected 42", c)
+	}
+}
+
 func Test_GithubExample(t *testing.T) {
 	stack := NewStack()
 
