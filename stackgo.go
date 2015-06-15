@@ -37,8 +37,7 @@ func NewStackWithCapacity(cap int) (*Stack) {
 
 // Push pushes a new element to the stack
 func (s *Stack) Push(elem interface{}) {
-
-	if len(s.slice) >= cap(s.slice) {
+	if len(s.slice) == cap(s.slice) {
 		slice := make([]interface{}, 0, len(s.slice) + s.blockSize)
 		copy(slice, s.slice)
 		s.slice = slice
