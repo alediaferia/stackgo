@@ -4,6 +4,8 @@
 It uses a pre-alloc strategy which adds little memory overhead to the stack allocation
 but makes push operations about ~+3x times faster than with a classic Stack implementation.
 
+Please **NOTE** that this implementation is NOT thread-safe.
+
 ## Usage
 
 Using it is pretty straightforward
