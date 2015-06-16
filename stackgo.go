@@ -4,11 +4,15 @@
 package stackgo
 
 type Stack struct {
-	slice []interface{}
-	blockSize int
+	size int
+	currentPage []interface{}
+	pages []*[]interface{}
+	offset int
+	capacity int
+	pageSize int
 }
 
-const s_DefaultAllocBlockSize = 20;
+const s_DefaultAllocPageSize = 4096
 
 // NewStack Creates a new Stack object with
 // an underlying default block allocation size.
@@ -16,49 +20,63 @@ const s_DefaultAllocBlockSize = 20;
 // in the future.
 // If you want to use a different block size use
 //  NewStackWithCapacity()
-func NewStack() (*Stack) {
+func NewStack() *Stack {
 	stack := new(Stack)
-	stack.slice = make([]interface{}, 0, s_DefaultAllocBlockSize)
-	stack.blockSize = s_DefaultAllocBlockSize
+	stack.currentPage = make([]interface{}, s_DefaultAllocPageSize)
+	stack.pages = []*[]interface{}{&(stack.currentPage)}
+	stack.offset = 0
+	stack.capacity = s_DefaultAllocPageSize
+	stack.pageSize = s_DefaultAllocPageSize
 
 	return stack
 }
+
 
 // NewStackWithCapacity makes it easy to specify
 // a custom block size for inner slice backing the
 // stack
-func NewStackWithCapacity(cap int) (*Stack) {
+func NewStackWithCapacity(cap int) *Stack {
 	stack := new(Stack)
-	stack.slice = make([]interface{}, 0, cap)
-	stack.blockSize = cap
+	stack.currentPage = make([]interface{}, cap)
+	stack.pages = []*[]interface{}{&(stack.currentPage)}
+	stack.offset = 0
+	stack.capacity = cap
+	stack.pageSize = cap
 
 	return stack
 }
 
+
 // Push pushes a new element to the stack
 func (s *Stack) Push(elem interface{}) {
-	if len(s.slice) + 1 == cap(s.slice) {
-		slice := make([]interface{}, 0, len(s.slice) + s.blockSize)
-		copy(slice, s.slice)
-		s.slice = slice
+    if s.size == s.capacity {
+		s.currentPage = make([]interface{}, s.pageSize)
+		s.pages = append(s.pages, &(s.currentPage))
+		s.capacity += s.pageSize
+		s.offset = 0
 	}
-
-	s.slice = append(s.slice, elem)
+	s.currentPage[s.offset] = elem
+	s.offset++
+	s.size++
 }
 
 // Pop pops the top element from the stack
 // If the stack is empty it returns nil
 func (s *Stack) Pop() (elem interface{}) {
-	if s.Size() == 0 {
-		return nil
+	s.offset--
+	s.size--
+	if s.offset < 0 {
+		s.offset = s.pageSize - 1
+		s.pages = s.pages[:len(s.pages) - 1]
+		s.currentPage = *(s.pages[len(s.pages) - 1])
 	}
 
-	elem, s.slice = s.slice[len(s.slice) - 1], s.slice[:len(s.slice) - 1]
+	elem = s.currentPage[s.offset]
 
 	return
 }
 
 // The current size of the stack
 func (s *Stack) Size() int {
-	return len(s.slice)
+	return s.size
 }
