@@ -34,35 +34,36 @@ func Test_Stack(t *testing.T) {
 }
 
 func Test_NewStackWithCapacity(t *testing.T) {
-	s := NewStackWithCapacity(42)
-	if c := s.pageSize; c != 42 {
+	s := NewStackWithCapacity(4)
+	if c := s.pageSize; c != 4 {
 		t.Fatalf("Unexpected stack block size: got %d, expected 42", c)
 	}
 
-	s.Push(75)
-	s.Push(124)
-	s.Push("Hello")
+	for i := 0; i < 15; i++ {
+        s.Push(i)
+	}
 
-	if size := s.Size(); size != 3 {
-		t.Fatalf("Unexpected stack size: expected 3, got %d", size)
+	if v := s.Top().(int); v != 14 {
+		t.Fatalf("Unexpected stack block size: got %d, expected 14", v)
 	}
-	if s.Pop().(string) != "Hello" {
-		t.Fatalf("Unexpected popped value.")
+
+	if v := len(s.pages); v != 4 {
+		t.Fatalf("Unexpected number of allocated pages: got %d, expected 4", v)
 	}
-	if size := s.Size(); size != 2 {
-		t.Fatalf("Unexpected stack size: expected 2, got %d", size)
+
+	if v := s.offset; v != 3 {
+		t.Fatalf("Unexpected stack page offset: got %d, expected 3", v)
 	}
-	if s.Pop().(int) != 124 {
-		t.Fatalf("Unexpected popped value.")
+
+	if s.Size() != 15 {
+		t.Fatalf("Unexpected stack size after 14 insertions: %d", s.size)
 	}
-	if size := s.Size(); size != 1 {
-		t.Fatalf("Unexpected stack size: expected 3, got %d", size)
-	}
-	if s.Pop().(int) != 75 {
-		t.Fatalf("Unexpected popped value.")
-	}
-	if size := s.Size(); size != 0 {
-		t.Fatalf("Unexpected stack size: expected 3, got %d", size)
+
+	for i := 14; i >= 0; i-- {
+		if v := s.Pop(); v != i {
+			t.Logf("Popped %v\n", v)
+			t.Fatalf("Unexpected popped value: got %d, expected %d", v, i)
+		}
 	}
 }
 

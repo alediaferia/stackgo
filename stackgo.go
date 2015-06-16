@@ -27,6 +27,7 @@ func NewStack() *Stack {
 	stack.offset = 0
 	stack.capacity = s_DefaultAllocPageSize
 	stack.pageSize = s_DefaultAllocPageSize
+	stack.size = 0
 
 	return stack
 }
@@ -42,6 +43,7 @@ func NewStackWithCapacity(cap int) *Stack {
 	stack.offset = 0
 	stack.capacity = cap
 	stack.pageSize = cap
+	stack.size = 0
 
 	return stack
 }
@@ -63,16 +65,35 @@ func (s *Stack) Push(elem interface{}) {
 // Pop pops the top element from the stack
 // If the stack is empty it returns nil
 func (s *Stack) Pop() (elem interface{}) {
+	if s.size == 0 {
+		return nil
+	}
+
 	s.offset--
 	s.size--
 	if s.offset < 0 {
 		s.offset = s.pageSize - 1
 		s.pages = s.pages[:len(s.pages) - 1]
 		s.currentPage = *(s.pages[len(s.pages) - 1])
+		s.capacity -= s.pageSize
 	}
 
 	elem = s.currentPage[s.offset]
 
+	return
+}
+
+func (s *Stack) Top() (elem interface{}) {
+	if s.size == 0 {
+		return nil
+	}
+
+	if s.offset == 0 {
+		page := *(s.pages[len(s.pages)-1])
+		elem = page[len(page)-1]
+		return
+	}
+	elem = s.currentPage[s.offset - 1]
 	return
 }
 
