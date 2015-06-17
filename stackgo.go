@@ -88,12 +88,13 @@ func (s *Stack) Top() (elem interface{}) {
 		return nil
 	}
 
-	if s.offset == 0 {
+	off := s.offset - 1
+	if off < 0 {
 		page := s.pages[len(s.pages)-1]
 		elem = page[len(page)-1]
 		return
 	}
-	elem = s.currentPage[s.offset - 1]
+	elem = s.currentPage[off]
 	return
 }
 

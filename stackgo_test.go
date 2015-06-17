@@ -66,6 +66,27 @@ func Test_NewStackWithCapacity(t *testing.T) {
 	}
 }
 
+func Test_EmptyStack(t *testing.T) {
+	stack := NewStack()
+
+	if stack.Pop() != nil {
+		t.Fatalf("Unexpected pop result with empty stack")
+	}
+}
+
+func Test_Top(t *testing.T) {
+	stack := NewStack()
+
+	if stack.Top() != nil {
+		t.Fatalf("Unexpected Top value")
+	}
+
+	stack.Push(51)
+	if stack.Top() != 51 {
+		t.Fatalf("Unexpected Top value")
+	}
+}
+
 func Test_GithubExample(t *testing.T) {
 	stack := NewStack()
 
