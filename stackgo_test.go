@@ -34,13 +34,35 @@ func Test_Stack(t *testing.T) {
 }
 
 func Test_NewStackWithCapacity(t *testing.T) {
-	s := NewStackWithCapacity(42)
-	if c := s.blockSize; c != 42 {
+	s := NewStackWithCapacity(4)
+	if c := s.pageSize; c != 4 {
 		t.Fatalf("Unexpected stack block size: got %d, expected 42", c)
 	}
 
-	if c := cap(s.slice); c != 42 {
-		t.Fatalf("Unexpected stack slice size: got %d, expected 42", c)
+	for i := 0; i < 15; i++ {
+        s.Push(i)
+	}
+
+	if v := s.Top().(int); v != 14 {
+		t.Fatalf("Unexpected stack block size: got %d, expected 14", v)
+	}
+
+	if v := len(s.pages); v != 4 {
+		t.Fatalf("Unexpected number of allocated pages: got %d, expected 4", v)
+	}
+
+	if v := s.offset; v != 3 {
+		t.Fatalf("Unexpected stack page offset: got %d, expected 3", v)
+	}
+
+	if s.Size() != 15 {
+		t.Fatalf("Unexpected stack size after 14 insertions: %d", s.size)
+	}
+
+	for i := 14; i >= 0; i-- {
+		if v := s.Pop(); v != i {
+			t.Fatalf("Unexpected popped value: got %d, expected %d", v, i)
+		}
 	}
 }
 
