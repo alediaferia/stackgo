@@ -74,7 +74,7 @@ func (s *Stack) Pop() (elem interface{}) {
 	if s.offset < 0 {
 		s.offset = s.pageSize - 1
 
-		s.currentPage, s.pages = s.pages[len(s.pages) - 1], s.pages[:len(s.pages) - 1]
+		s.currentPage, s.pages = s.pages[len(s.pages) - 2], s.pages[:len(s.pages) - 1]
 		s.capacity -= s.pageSize
 	}
 

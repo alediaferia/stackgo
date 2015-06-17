@@ -59,19 +59,10 @@ func Test_NewStackWithCapacity(t *testing.T) {
 		t.Fatalf("Unexpected stack size after 14 insertions: %d", s.size)
 	}
 
-	for i := 0; i < len(s.pages); i++ {
-		for j := 0; j < s.pageSize; j++ {
-			t.Log(s.pages[i][j])
-		}
-	}
-
-	t.Log("Now popping")
-
 	for i := 14; i >= 0; i-- {
-		//if v := s.Pop(); v != i {
-			t.Log(s.Pop())
-			//t.Fatalf("Unexpected popped value: got %d, expected %d", v, i)
-		//}
+		if v := s.Pop(); v != i {
+			t.Fatalf("Unexpected popped value: got %d, expected %d", v, i)
+		}
 	}
 }
 
