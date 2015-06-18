@@ -16,8 +16,7 @@ const s_DefaultAllocPageSize = 4096
 
 // NewStack Creates a new Stack object with
 // an underlying default block allocation size.
-// The default is currently 20 but this may vary
-// in the future.
+// The current default allocation size is one page.
 // If you want to use a different block size use
 //  NewStackWithCapacity()
 func NewStack() *Stack {
