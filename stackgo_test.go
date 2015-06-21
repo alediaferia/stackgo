@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func Test_Stack(t *testing.T) {
+func Test_Stackgo(t *testing.T) {
 	s := NewStack()
 	s.Push(75)
 	s.Push(124)
@@ -141,7 +141,7 @@ func (s *AltStack) Pop() (value interface{}) {
 	return nil
 }
 
-func Benchmark_PushDefaultStack(b *testing.B) {
+func Benchmark_PushStackgo(b *testing.B) {
 	b.ReportAllocs()
 	b.StopTimer()
 	b.Logf("Testing push speed of %d integer values on the default Stack implementation", b.N)
@@ -152,7 +152,7 @@ func Benchmark_PushDefaultStack(b *testing.B) {
 	}
 }
 
-func Benchmark_PushAltStack(b *testing.B) {
+func Benchmark_PushStandardStack(b *testing.B) {
 	b.ReportAllocs()
 	b.StopTimer()
 	b.Logf("Testing push speed of %d integer values on the alternate Stack implementation", b.N)
@@ -163,7 +163,7 @@ func Benchmark_PushAltStack(b *testing.B) {
 	}
 }
 
-func Benchmark_PopDefaultStack(b *testing.B) {
+func Benchmark_PopStackgo(b *testing.B) {
 	b.ReportAllocs()
 	b.Logf("Testing pop speed of %d integer values on the default Stack implementation", b.N)
 	s := NewStack()
@@ -176,7 +176,7 @@ func Benchmark_PopDefaultStack(b *testing.B) {
 	}
 }
 
-func Benchmark_PopAltStack(b *testing.B) {
+func Benchmark_PopStandardStack(b *testing.B) {
 	b.ReportAllocs()
 	b.Logf("Testing pop speed of %d integer values on the alternate Stack implementation", b.N)
 	s := new(AltStack)
