@@ -1,5 +1,8 @@
 # Stackgo
 
+[![Build Status](https://secure.travis-ci.org/alediaferia/stackgo.svg)](http://travis-ci.org/alediaferia/stackgo)
+
+
 **Stackgo** is a *slice-based* implementation of a simple stack in Go.
 It uses a pre-alloc pagination strategy which adds little memory overhead to the stack allocation
 but makes push operations faster than with a classic Stack implementation.
