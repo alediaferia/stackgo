@@ -1,11 +1,7 @@
 # Stackgo
-<snippet>
-  <content><![CDATA[
-[![Build Status](https://secure.travis-ci.org/${1:user}/${2:project}.svg${3:?branch=${4:branch}})](http://travis-ci.org/${1:user}/${2:project})
-]]></content>
-  <tabTrigger>rm:travis</tabTrigger>
-  <scope>text.html.markdown</scope>
-</snippet>
+
+[![Build Status](https://secure.travis-ci.org/alediaferia/stackgo.svg)](http://travis-ci.org/alediaferia/stackgo)
+
 
 **Stackgo** is a *slice-based* implementation of a simple stack in Go.
 It uses a pre-alloc pagination strategy which adds little memory overhead to the stack allocation
