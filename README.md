@@ -11,7 +11,24 @@ Please **NOTE** that the current implementation is NOT thread-safe.
 - [Contribute](#Contribute)
 - [License](#License)
 
-## Usage
+## Getting started
+
+### Import
+You can either import this package directly:
+
+```go
+import "github.com/alediaferia/stackgo"
+```
+
+or through [gopkg.in](http://gopkg.in)
+
+```go
+import "gopkg.in/alediaferia/stackgo.v1"
+```
+
+Currently only **version 1** has been released.
+
+### Usage
 
 Using it is pretty straightforward
 
@@ -40,8 +57,11 @@ func main() {
 }
 ```
 
+## Performance
+Check the implementation details [here](docs/IMPLEMENTATION.md).
+
 ## Contribute
-I'd really appreciate contributions, otherwise I wouldn't have made this open :p
+I'd really appreciate contributions, otherwise I wouldn't have made this open :smiley:.
 Also, if you have suggestions on how to make this perform even faster I'd be really happy to hear about them.
 
 ## License
