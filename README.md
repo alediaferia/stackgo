@@ -6,6 +6,11 @@ but makes push operations faster than with a classic Stack implementation.
 
 Please **NOTE** that the current implementation is NOT thread-safe.
 
+- [Usage](#Usage)
+- [Performance](#Performance)
+- [Contribute](#Contribute)
+- [License](#License)
+
 ## Usage
 
 Using it is pretty straightforward
