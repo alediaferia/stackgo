@@ -1,4 +1,4 @@
-# Stackgo [![Build Status](https://secure.travis-ci.org/alediaferia/stackgo.svg)](http://travis-ci.org/alediaferia/stackgo) [![Coverage Status](https://coveralls.io/repos/alediaferia/stackgo/badge.svg?branch=master)](https://coveralls.io/r/alediaferia/stackgo?branch=master)
+# Stackgo [![Build Status](https://secure.travis-ci.org/alediaferia/stackgo.svg)](http://travis-ci.org/alediaferia/stackgo) [![Coverage Status](https://coveralls.io/repos/alediaferia/stackgo/badge.svg?branch=master&service=github)](https://coveralls.io/github/alediaferia/stackgo?branch=master)
 
 **Stackgo** is a *slice-based* implementation of a simple stack in Go.
 It uses a pre-alloc pagination strategy which adds little memory overhead to the stack allocation
