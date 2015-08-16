@@ -10,6 +10,7 @@ type Stack struct {
 	offset int
 	capacity int
 	pageSize int
+	currentPageIndex int
 }
 
 const s_DefaultAllocPageSize = 4096
@@ -27,6 +28,7 @@ func NewStack() *Stack {
 	stack.capacity = s_DefaultAllocPageSize
 	stack.pageSize = s_DefaultAllocPageSize
 	stack.size = 0
+	stack.currentPageIndex = 0
 
 	return stack
 }
@@ -43,22 +45,51 @@ func NewStackWithCapacity(cap int) *Stack {
 	stack.capacity = cap
 	stack.pageSize = cap
 	stack.size = 0
+	stack.currentPageIndex = 0
 
 	return stack
 }
 
 
 // Push pushes a new element to the stack
-func (s *Stack) Push(elem interface{}) {
+func (s *Stack) Push(elem... interface{}) {
+	if elem == nil || len(elem) == 0 {
+		return
+	}
+
     if s.size == s.capacity {
+		pages_count := len(elem) / s.pageSize
+		if len(elem) % s.pageSize != 0 {
+			pages_count++
+		}
+		s.capacity += s.pageSize
+
 		s.currentPage = make([]interface{}, s.pageSize)
 		s.pages = append(s.pages, s.currentPage)
-		s.capacity += s.pageSize
+		s.currentPageIndex++
+
+		pages_count--
+		for pages_count > 0 {
+			page := make([]interface{}, s.pageSize)
+			s.pages = append(s.pages, page)
+		}
+
 		s.offset = 0
 	}
-	s.currentPage[s.offset] = elem
-	s.offset++
-	s.size++
+
+	available := len(s.currentPage) - s.offset
+	for len(elem) > available {
+		copy(s.currentPage[s.offset:], elem[:available])
+		s.currentPage = s.pages[s.currentPageIndex + 1]
+		s.currentPageIndex++
+		elem = elem[available:]
+		s.offset = 0
+		available = len(s.currentPage)
+	}
+
+	copy(s.currentPage[s.offset:], elem)
+	s.offset += len(elem)
+	s.size += len(elem)
 }
 
 // Pop pops the top element from the stack
@@ -75,6 +106,7 @@ func (s *Stack) Pop() (elem interface{}) {
 
 		s.currentPage, s.pages = s.pages[len(s.pages) - 2], s.pages[:len(s.pages) - 1]
 		s.capacity -= s.pageSize
+		s.currentPageIndex--
 	}
 
 	elem = s.currentPage[s.offset]
