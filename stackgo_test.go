@@ -106,6 +106,30 @@ func Test_GithubExample(t *testing.T) {
 	}
 }
 
+func Test_PushMultiple(t *testing.T) {
+	stack := NewStack()
+
+	ints := []interface{}{ 1, 2, 3, 4, 5}
+	stack.Push(ints...)
+
+	if stack.Size() != 5 {
+		t.Fatalf("Unexpected stack length != 5")
+	}
+
+	ints_ := make([]int, 0, 5)
+	for stack.Size() > 0 {
+		ints_ = append(ints_, stack.Pop().(int))
+	}
+
+	j := len(ints_) - 1
+	for i := 0; i < len(ints); i++ {
+		if ints[i].(int) != ints_[j] {
+			t.Fatalf("Unexpected: %d != %d", ints[i], ints_[j])
+		}
+		j--
+	}
+}
+
 /*
  * Here follows an alternative stack
  * implementation which is not based on
