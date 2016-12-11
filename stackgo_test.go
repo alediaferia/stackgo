@@ -40,7 +40,7 @@ func Test_NewStackWithCapacity(t *testing.T) {
 	}
 
 	for i := 0; i < 15; i++ {
-        s.Push(i)
+		s.Push(i)
 	}
 
 	if v := s.Top().(int); v != 14 {
@@ -58,7 +58,6 @@ func Test_NewStackWithCapacity(t *testing.T) {
 	if s.Size() != 15 {
 		t.Fatalf("Unexpected stack size after 14 insertions: %d", s.size)
 	}
-
 	for i := 14; i >= 0; i-- {
 		if v := s.Pop(); v != i {
 			t.Fatalf("Unexpected popped value: got %d, expected %d", v, i)
@@ -108,8 +107,7 @@ func Test_GithubExample(t *testing.T) {
 
 func Test_PushMultiple(t *testing.T) {
 	stack := NewStack()
-
-	ints := []interface{}{ 1, 2, 3, 4, 5}
+	ints := []interface{}{1, 2, 3, 4, 5}
 	stack.Push(ints...)
 
 	if stack.Size() != 5 {
@@ -125,6 +123,50 @@ func Test_PushMultiple(t *testing.T) {
 	for i := 0; i < len(ints); i++ {
 		if ints[i].(int) != ints_[j] {
 			t.Fatalf("Unexpected: %d != %d", ints[i], ints_[j])
+		}
+		j--
+	}
+}
+
+func Test_PushMultiple_With_LittleCapacity(t *testing.T) {
+	stack := NewStackWithCapacity(3)
+	ints := []interface{}{1, 2, 3, 4, 5}
+	stack.Push(ints...)
+	if stack.Size() != 5 {
+		t.Fatalf("Unexpected stack length != 8")
+	}
+	ints_ := make([]int, 0, 5)
+	for stack.Size() > 0 {
+		ints_ = append(ints_, stack.Pop().(int))
+	}
+
+	j := len(ints_) - 1
+	for i := 0; i < len(ints); i++ {
+		if ints[i].(int) != ints_[j] {
+			t.Fatalf("Unexpected: %d != %d", ints[i], ints_[j])
+		}
+		j--
+	}
+}
+
+func Test_Extend_Capacity(t *testing.T) {
+	stack := NewStackWithCapacity(3)
+	ints2 := []interface{}{1, 2}
+	ints6 := []interface{}{3, 4, 5, 6, 7, 8}
+	stack.Push(ints2...)
+	stack.Push(ints6...)
+	if stack.Size() != 8 {
+		t.Fatalf("Unexpected stack length != 8")
+	}
+	ints_ := make([]int, 0, 8)
+	for stack.Size() > 0 {
+		ints_ = append(ints_, stack.Pop().(int))
+	}
+	ints8 := append(ints2, ints6...)
+	j := len(ints_) - 1
+	for i := 0; i < len(ints8); i++ {
+		if ints8[i].(int) != ints_[j] {
+			t.Fatalf("Unexpected: %d != %d", ints8[i].(int), ints_[j])
 		}
 		j--
 	}
