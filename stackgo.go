@@ -4,12 +4,12 @@
 package stackgo
 
 type Stack struct {
-	size int
-	currentPage []interface{}
-	pages [][]interface{}
-	offset int
-	capacity int
-	pageSize int
+	size             int
+	currentPage      []interface{}
+	pages            [][]interface{}
+	offset           int
+	capacity         int
+	pageSize         int
 	currentPageIndex int
 }
 
@@ -33,7 +33,6 @@ func NewStack() *Stack {
 	return stack
 }
 
-
 // NewStackWithCapacity makes it easy to specify
 // a custom block size for inner slice backing the
 // stack
@@ -50,46 +49,50 @@ func NewStackWithCapacity(cap int) *Stack {
 	return stack
 }
 
-
 // Push pushes a new element to the stack
-func (s *Stack) Push(elem... interface{}) {
+func (s *Stack) Push(elem ...interface{}) {
 	if elem == nil || len(elem) == 0 {
 		return
 	}
 
-    if s.size == s.capacity {
-		pages_count := len(elem) / s.pageSize
-		if len(elem) % s.pageSize != 0 {
-			pages_count++
+	// ensures enough pages are ready to be
+	// filled in and then fills them from
+	// the provided elem array
+	if s.size+len(elem) > s.capacity {
+		newPages := len(elem) / s.pageSize
+		if len(elem)%s.pageSize != 0 {
+			newPages++
 		}
-		s.capacity += s.pageSize
 
-		s.currentPage = make([]interface{}, s.pageSize)
-		s.pages = append(s.pages, s.currentPage)
-		s.currentPageIndex++
-
-		pages_count--
-		for pages_count > 0 {
+		// appending new empty pages
+		for newPages > 0 {
 			page := make([]interface{}, s.pageSize)
 			s.pages = append(s.pages, page)
+			s.capacity += len(page)
+			newPages--
 		}
-
-		s.offset = 0
 	}
 
-	available := len(s.currentPage) - s.offset
-	for len(elem) > available {
-		copy(s.currentPage[s.offset:], elem[:available])
-		s.currentPage = s.pages[s.currentPageIndex + 1]
-		s.currentPageIndex++
-		elem = elem[available:]
-		s.offset = 0
-		available = len(s.currentPage)
-	}
-
-	copy(s.currentPage[s.offset:], elem)
-	s.offset += len(elem)
+	// now that we have enough pages
+	// we can start copying the elements
+	// into the stack
 	s.size += len(elem)
+	for len(elem) > 0 {
+		available := len(s.currentPage) - s.offset
+		min := len(elem)
+		if available < min {
+			min = available
+		}
+		copy(s.currentPage[s.offset:], elem[:min])
+		elem = elem[min:]
+		s.offset += min
+		if len(elem) > 0 {
+			// page fully filled; move to the next one
+			s.currentPage = s.pages[s.currentPageIndex+1]
+			s.currentPageIndex++
+			s.offset = 0
+		}
+	}
 }
 
 // Pop pops the top element from the stack
@@ -101,10 +104,11 @@ func (s *Stack) Pop() (elem interface{}) {
 
 	s.offset--
 	s.size--
+
 	if s.offset < 0 {
 		s.offset = s.pageSize - 1
 
-		s.currentPage, s.pages = s.pages[len(s.pages) - 2], s.pages[:len(s.pages) - 1]
+		s.currentPage, s.pages = s.pages[s.currentPageIndex-1], s.pages[:s.currentPageIndex+1]
 		s.capacity -= s.pageSize
 		s.currentPageIndex--
 	}

@@ -36,11 +36,11 @@ func Test_Stackgo(t *testing.T) {
 func Test_NewStackWithCapacity(t *testing.T) {
 	s := NewStackWithCapacity(4)
 	if c := s.pageSize; c != 4 {
-		t.Fatalf("Unexpected stack block size: got %d, expected 42", c)
+		t.Fatalf("Unexpected stack block size: got %d, expected 4", c)
 	}
 
 	for i := 0; i < 15; i++ {
-        s.Push(i)
+		s.Push(i)
 	}
 
 	if v := s.Top().(int); v != 14 {
@@ -109,7 +109,7 @@ func Test_GithubExample(t *testing.T) {
 func Test_PushMultiple(t *testing.T) {
 	stack := NewStack()
 
-	ints := []interface{}{ 1, 2, 3, 4, 5}
+	ints := []interface{}{1, 2, 3, 4, 5}
 	stack.Push(ints...)
 
 	if stack.Size() != 5 {
@@ -125,6 +125,50 @@ func Test_PushMultiple(t *testing.T) {
 	for i := 0; i < len(ints); i++ {
 		if ints[i].(int) != ints_[j] {
 			t.Fatalf("Unexpected: %d != %d", ints[i], ints_[j])
+		}
+		j--
+	}
+}
+
+func Test_PushMultipleWithLittleCapacity(t *testing.T) {
+	stack := NewStackWithCapacity(3)
+	ints := []interface{}{1, 2, 3, 4, 5}
+	stack.Push(ints...)
+	if stack.Size() != 5 {
+		t.Fatalf("Unexpected stack length (%d) != 5", stack.Size())
+	}
+	ints_ := make([]int, 0, 5)
+	for stack.Size() > 0 {
+		ints_ = append(ints_, stack.Pop().(int))
+	}
+
+	j := len(ints_) - 1
+	for i := 0; i < len(ints); i++ {
+		if ints[i].(int) != ints_[j] {
+			t.Fatalf("Unexpected: %d != %d", ints[i], ints_[j])
+		}
+		j--
+	}
+}
+
+func Test_ExtendCapacity(t *testing.T) {
+	stack := NewStackWithCapacity(3)
+	ints2 := []interface{}{1, 2}
+	ints6 := []interface{}{3, 4, 5, 6, 7, 8}
+	stack.Push(ints2...)
+	stack.Push(ints6...)
+	if size := stack.Size(); size != 8 {
+		t.Fatalf("Unexpected stack length (%d) != 8", stack.Size())
+	}
+	ints_ := make([]int, 0, 8)
+	for stack.Size() > 0 {
+		ints_ = append(ints_, stack.Pop().(int))
+	}
+	ints8 := append(ints2, ints6...)
+	j := len(ints_) - 1
+	for i := 0; i < len(ints8); i++ {
+		if ints8[i].(int) != ints_[j] {
+			t.Fatalf("Unexpected: %d != %d", ints8[i].(int), ints_[j])
 		}
 		j--
 	}
